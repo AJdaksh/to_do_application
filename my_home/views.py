@@ -3,7 +3,6 @@ import io
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 
-from django.contrib.auth.decorators import login_required
 
 from .serializers import User_Serializer
 from rest_framework.renderers import JSONRenderer
@@ -20,6 +19,9 @@ from django.views.decorators.csrf import csrf_exempt
 def home(request):
     if request.session['page_id'] =='active':
         return render(request,'home.html')
+    else:
+        user_id = request.session['user_id']
+        return redirect('profile_data',us_id=user_id)
 
 # Function for LogIn Page
 def log_in(request):
@@ -54,6 +56,9 @@ def log_in(request):
         else:
             log_in_form = User_Login_Form
             return render(request,'log_in.html',{'form':log_in_form})
+    else:
+        user_id = request.session['user_id']
+        return redirect('profile_data',us_id=user_id)
 
 
 # Function for SignUp Page
@@ -89,6 +94,7 @@ def profile(request,us_id):
             #for Log
             tasks_log = Task_Log.objects.filter(user_id = us_id).order_by('-id')
             request.session['page_id'] = 'inactive'
+            request.session['user_id'] = us_id
         return render(request,'profile.html',{'us_id':us_id,'user_name':user_name_in_database,'user_email':user_email_in_database,'user_task':user_tasks,'task_log':tasks_log})
     else:
         return redirect('http://127.0.0.1:8000/log_in/')
@@ -98,6 +104,7 @@ def profile(request,us_id):
 def logout(request):
     request.session['page_id'] ='active'
     request.session['fav_color'] = 'black'
+    request.session['user_id'] = 0
     #return HttpResponse('logout')
     return redirect('http://127.0.0.1:8000/')
 
