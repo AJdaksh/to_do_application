@@ -226,3 +226,6 @@ def jsonapi_user(request,id=None):
         res = {'msg':'deleted'}
         json_data1 = JSONRenderer().render(res)
         return HttpResponse(json_data1,content_type='application/json')
+
+
+#changes
