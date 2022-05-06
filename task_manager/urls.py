@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('my_home.urls')),
     path('log_in/',include('my_home.urls')),
+    path('logout/',include('my_home.urls')),
     path('sign_up/',include('my_home.urls')),
     path('profile/',include('my_home.urls')),
     path('add_task/',include('my_home.urls')),
