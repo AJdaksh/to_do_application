@@ -15,6 +15,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 
+
+
+
 # Function for Home Page
 def home(request):
     if request.session['page_id'] =='active':
