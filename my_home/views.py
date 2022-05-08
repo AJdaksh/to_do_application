@@ -172,10 +172,10 @@ def update(request,id):
                 task_log_ins.save()
             return redirect('profile_data',us_id=task_user_id)
 
-    else:
-        update_task = User_Task.objects.get(pk=id)
-        update_tasks = Update_Task_Form(instance=update_task)
-        return render(request,'update_task.html',{'form':update_tasks})
+        else:
+            update_task = User_Task.objects.get(pk=id)
+            update_tasks = Update_Task_Form(instance=update_task)
+            return render(request,'update_task.html',{'form':update_tasks})
 
 # Function for Delete_Task Page
 def delete(request,id):
