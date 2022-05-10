@@ -1,5 +1,6 @@
+from datetime import date
 from django import forms
-from .models import  User_Detail,User_Task,Task_Log
+from .models import  User_Detail,User_Task,Task_Log,Admin_Detail
 
 
 # Form for Signup Page
@@ -23,6 +24,16 @@ class User_Login_Form(forms.ModelForm):
             'password':forms.PasswordInput(attrs={'class':'form-control'}),
         }
 
+#Admin_login page
+class Admin_Login_Form(forms.ModelForm):
+    class Meta:
+        model = Admin_Detail
+        fields = ['email','password']
+        widgets = {
+            'email': forms.EmailInput(attrs={'class':'form-control'}),
+            'password':forms.PasswordInput(attrs={'class':'form-control'}),
+        }
+
 # Form for Add Task Page
 class User_Add_Task_Form(forms.ModelForm):
     class Meta:
@@ -39,12 +50,18 @@ class Update_Task_Form(forms.ModelForm):
         model = User_Task
         choices=(('pending','pending'),('Complete','complete'))
         fields = ['task_name','deadline_date','status']
-        status = forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple,choices=choices
-    )
+        status = forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple,choices=choices)
+        deadline_date:forms.DateInput(format = '%Y-%m-%d',attrs={'type': 'date'})
         widgets = {
             'task_name': forms.TextInput(attrs={'class':'form-control'}),
+
             'deadline_date':forms.DateInput(format = '%Y-%m-%d',attrs={'type': 'date'}),
         }
+        def clean(self):
+            super().clean()
+            if not (date.today() <= self.deadline_date):
+                raise forms.ValidationError('Invalid start and end datetime')
+        
 
 #Form for User Task
 class User_Task_Form(forms.ModelForm):

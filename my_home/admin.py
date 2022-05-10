@@ -1,8 +1,12 @@
 from django.contrib import admin
-from .models import Task_Log,User_Detail, User_Task
+from .models import Task_Log,User_Detail, User_Task,Admin_Detail
 # Register your models here.
 
 @admin.register(User_Detail)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('id','username','email','password')
+
+@admin.register(Admin_Detail)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('id','username','email','password')
 
